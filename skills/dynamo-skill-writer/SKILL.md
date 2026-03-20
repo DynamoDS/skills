@@ -1,6 +1,8 @@
 ---
 name: dynamo-skill-writer
 description: Author and maintain agent skills for DynamoDS repositories. Use this skill when creating a new skill, updating an existing skill, or ensuring skill content is consistent and well-structured across DynamoDS repos.
+metadata:
+  version: "2026.03.20"
 ---
 
 # Dynamo Skill Writer

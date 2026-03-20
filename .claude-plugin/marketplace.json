@@ -1,0 +1,35 @@
+{
+  "name": "dynamo-skills",
+  "owner": {
+    "name": "DynamoDS"
+  },
+  "metadata": {
+    "description": "Shared Claude Code skills for the DynamoDS org"
+  },
+  "plugins": [
+    {
+      "name": "dynamo-jira-ticket",
+      "source": "./skills/dynamo-jira-ticket",
+      "version": "2026.03.20",
+      "description": "Create structured Jira tickets for bugs, features, and triage",
+      "category": "workflow",
+      "keywords": ["jira", "tickets", "bug-report", "documentation"]
+    },
+    {
+      "name": "dynamo-pr-description",
+      "source": "./skills/dynamo-pr-description",
+      "version": "2026.03.20",
+      "description": "Generate PR descriptions for DynamoDS repositories",
+      "category": "development",
+      "keywords": ["pull-request", "pr", "documentation", "code-review"]
+    },
+    {
+      "name": "dynamo-skill-writer",
+      "source": "./skills/dynamo-skill-writer",
+      "version": "2026.03.20",
+      "description": "Author and maintain agent skills across DynamoDS repos",
+      "category": "productivity",
+      "keywords": ["skills", "agents", "automation", "documentation"]
+    }
+  ]
+}
