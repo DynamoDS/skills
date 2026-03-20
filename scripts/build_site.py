@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-Build docs/index.html from skills/*/SKILL.md frontmatter.
+Build docs/index.html from .claude-plugin/marketplace.json.
 Run from the repository root.
 """
 
+import json
 import re
-import yaml
 from pathlib import Path
 
 ICONS = {
@@ -23,6 +23,7 @@ SKILL_CARD_TEMPLATE = """\
     <h3>__SKILL_TITLE__</h3>
     <div class="skill-version">v__SKILL_VERSION__</div>
     <p>__SKILL_DESC__</p>
+    <div class="skill-keywords">__SKILL_KEYWORDS__</div>
   </div>
   <div class="code-wrap">
     <div class="code-block">/plugin install __SKILL_SLUG__@dynamo-skills</div>
@@ -256,14 +257,38 @@ TEMPLATE = """\
       font-size: 0.875rem;
       color: var(--muted);
       line-height: 1.55;
+      margin-bottom: 12px;
+    }
+
+    .skill-keywords {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
       margin-bottom: 16px;
     }
+    .skill-keywords:empty { display: none; }
+    .skill-tag {
+      font-size: 0.7rem;
+      font-family: var(--mono);
+      color: var(--muted);
+      background: #111;
+      border: 1px solid #222;
+      border-radius: 4px;
+      padding: 2px 7px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .skill-tag:hover { color: var(--text); border-color: #444; }
+    #skill-search:focus { border-color: #444; }
+    #skill-search::placeholder { color: #555; }
+    .skill-tag.active { color: var(--accent); border-color: var(--accent); background: #0d1f2d; }
+    .skill-card.hidden { display: none; }
 
     .code-block {
       background: #0a0a0a;
       border: 1px solid #1e1e1e;
       border-radius: 8px;
-      padding: 12px 14px;
+      padding: 12px 40px 12px 14px;
       font-family: var(--mono);
       font-size: 0.8rem;
       color: #cdd6f4;
@@ -389,9 +414,18 @@ TEMPLATE = """\
     <h2 style="font-size: 1.2rem; margin-bottom: 8px;">Install as a Claude plugin</h2>
     <p style="color: var(--muted); font-size: 0.95rem; margin-bottom: 16px;">Register the DynamoDS skills repo once, then install any skill on demand.</p>
     <div class="code-wrap">
-      <div class="code-block">/plugin add dynamo-skills https://github.com/DynamoDS/skills</div>
+      <div class="code-block">/plugin marketplace add DynamoDS/skills</div>
       <button class="copy-btn" aria-label="Copy"><i class="fa-regular fa-copy"></i></button>
     </div>
+  </div>
+  <div style="margin-bottom:16px;">
+    <input id="skill-search" type="search" placeholder="Search skills…" autocomplete="off"
+      style="width:100%;box-sizing:border-box;background:#0d0d0d;border:1px solid #2a2a2a;border-radius:8px;padding:10px 14px;font-size:0.875rem;color:var(--text);outline:none;font-family:var(--sans);">
+  </div>
+  <div id="filter-bar" style="display:none; align-items:center; gap:8px; margin-bottom:20px;">
+    <span style="font-size:0.75rem; color:var(--muted);">Filtered by</span>
+    <span id="filter-active-tag" class="skill-tag active"></span>
+    <button id="filter-clear" aria-label="Clear filter" style="background:none;border:none;color:var(--muted);cursor:pointer;padding:0;font-size:0.75rem;">✕ clear</button>
   </div>
   <div class="skills-grid">
 __SKILL_CARDS__
@@ -442,19 +476,56 @@ document.querySelectorAll('.copy-btn').forEach(btn => {
     });
   });
 });
+
+let activeFilter = null;
+let searchQuery = '';
+const filterBar = document.getElementById('filter-bar');
+const filterActiveTag = document.getElementById('filter-active-tag');
+const filterClear = document.getElementById('filter-clear');
+const searchInput = document.getElementById('skill-search');
+
+function updateCards() {
+  const q = searchQuery.toLowerCase();
+  document.querySelectorAll('.skill-tag').forEach(t => t.classList.toggle('active', t.textContent.trim() === activeFilter));
+  document.querySelectorAll('.skill-card').forEach(card => {
+    const tags = Array.from(card.querySelectorAll('.skill-tag')).map(t => t.textContent.trim());
+    const text = card.textContent.toLowerCase();
+    const matchesFilter = activeFilter === null || tags.includes(activeFilter);
+    const matchesSearch = q === '' || text.includes(q);
+    card.classList.toggle('hidden', !matchesFilter || !matchesSearch);
+  });
+  if (activeFilter) {
+    filterActiveTag.textContent = activeFilter;
+    filterBar.style.display = 'flex';
+  } else {
+    filterBar.style.display = 'none';
+  }
+}
+
+document.querySelectorAll('.skill-tag').forEach(tag => {
+  tag.addEventListener('click', () => {
+    const keyword = tag.textContent.trim();
+    activeFilter = activeFilter === keyword ? null : keyword;
+    updateCards();
+  });
+});
+
+filterClear.addEventListener('click', () => { activeFilter = null; updateCards(); });
+
+searchInput.addEventListener('input', () => { searchQuery = searchInput.value; updateCards(); });
 </script>
 </body>
 </html>
 """
 
 
-def parse_frontmatter(text):
-    m = re.match(r"^---\n(.*?)\n---\s*(.*)", text, re.DOTALL)
-    if not m:
-        return {}, None
-    fm = yaml.safe_load(m.group(1)) or {}
-    h1 = re.search(r"^# (.+)", m.group(2), re.MULTILINE)
-    return fm, h1.group(1).strip() if h1 else None
+def h1_title(skill_md_path):
+    try:
+        text = skill_md_path.read_text(encoding="utf-8")
+        m = re.search(r"^# (.+)", text, re.MULTILINE)
+        return m.group(1).strip() if m else None
+    except OSError:
+        return None
 
 
 def human_name(slug):
@@ -476,6 +547,7 @@ def short_desc(description, limit=130):
 
 def skill_card(skill):
     icon = ICONS.get(skill["icon_key"], DEFAULT_ICON)
+    keywords_html = "".join(f'<span class="skill-tag">{k}</span>' for k in skill["keywords"])
     return (
         SKILL_CARD_TEMPLATE
         .replace("__SKILL_ICON__", icon)
@@ -483,6 +555,7 @@ def skill_card(skill):
         .replace("__SKILL_TITLE__", skill["title"])
         .replace("__SKILL_VERSION__", skill["version"])
         .replace("__SKILL_DESC__", skill["description"])
+        .replace("__SKILL_KEYWORDS__", keywords_html)
     )
 
 
@@ -496,20 +569,17 @@ def build_html(skills):
     )
 
 
+manifest = json.loads(Path(".claude-plugin/marketplace.json").read_text(encoding="utf-8"))
 skills = []
-for skill_dir in sorted(Path("skills").iterdir()):
-    skill_file = skill_dir / "SKILL.md"
-    if not skill_file.exists():
-        continue
-    fm, h1 = parse_frontmatter(skill_file.read_text(encoding="utf-8"))
-    if not fm:
-        continue
-    slug = fm.get("name", skill_dir.name)
+for plugin in manifest.get("plugins", []):
+    slug = plugin["name"]
+    source = Path(plugin["source"])
     skills.append({
         "slug": slug,
-        "title": h1 or human_name(slug),
-        "description": short_desc(fm.get("description", "")),
-        "version": str((fm.get("metadata") or {}).get("version", "")),
+        "title": h1_title(source / "SKILL.md") or human_name(slug),
+        "description": short_desc(plugin.get("description", "")),
+        "version": plugin.get("version", ""),
+        "keywords": plugin.get("keywords", []),
         "icon_key": pick_icon(slug),
     })
 
