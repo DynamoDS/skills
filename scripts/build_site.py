@@ -104,15 +104,15 @@ TEMPLATE = """\
     nav a.gh-link i { font-size: 18px; }
 
     .hero {
-      max-width: 960px;
+      max-width: 1100px;
       margin: 0 auto;
       padding: 48px 2rem 40px;
       text-align: center;
     }
 
     .hero img {
-      width: 48px;
-      height: 48px;
+      width: 64px;
+      height: 64px;
       margin-bottom: 16px;
       opacity: 0.95;
     }
@@ -132,7 +132,14 @@ TEMPLATE = """\
       gap: 8px;
       justify-content: center;
       flex-wrap: wrap;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: center;
+      margin-top: 4px;
     }
 
     .badge {
@@ -389,26 +396,12 @@ TEMPLATE = """\
 <div class="hero">
   <img src="images/logo.png" alt="Dynamo logo" />
   <h1>Shared <span>Agent Skills</span> for DynamoDS</h1>
-  <div class="badge-row">
-    <span class="badge">__SKILL_COUNT__ Skills</span>
-  </div>
-  <div class="cta-row">
-    <a class="btn btn-primary" href="https://github.com/DynamoDS/skills" target="_blank" rel="noopener">
-      <i class="fa-brands fa-github"></i>
-      View on GitHub
-    </a>
-    <a class="btn btn-secondary" href="https://github.com/DynamoDS/skills/tree/master/skills" target="_blank" rel="noopener">
-      Browse Skills
-    </a>
-  </div>
+  <p style="color:var(--muted);font-size:0.95rem;width:100%;max-width:1100px;text-align:left;margin-top:12px;">Agent Skills are a simple, open format for giving agents new capabilities and expertise. Each skill is a self-contained folder of instructions and resources that agents can discover and use — write once, use everywhere. <a href="https://agentskills.io/home" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">Learn more →</a></p>
 </div>
 
 <hr />
 
 <section style="padding-top: 64px;">
-  <div class="section-label">Skills</div>
-  <h2>Introduction</h2>
-  <p>Agent Skills are a simple, open format for giving agents new capabilities and expertise. Each skill is a self-contained folder of instructions and resources that agents can discover and use — write once, use everywhere. <a href="https://agentskills.io/home" target="_blank" rel="noopener" style="color: var(--accent); text-decoration: none;">Learn more →</a></p>
   <div style="margin-bottom: 32px;">
     <div class="section-label">Get started</div>
     <h2 style="font-size: 1.2rem; margin-bottom: 8px;">Install as a Claude plugin</h2>
@@ -418,14 +411,13 @@ TEMPLATE = """\
       <button class="copy-btn" aria-label="Copy"><i class="fa-regular fa-copy"></i></button>
     </div>
   </div>
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
+    <div class="hero-tags" style="justify-content:flex-start;margin-top:0;">__ALL_KEYWORDS__</div>
+    <button id="filter-clear" aria-label="Clear filter" style="display:none;background:none;border:1px solid #333;border-radius:4px;color:var(--muted);cursor:pointer;padding:2px 8px;font-size:0.7rem;font-family:var(--mono);white-space:nowrap;">✕ clear</button>
+  </div>
   <div style="margin-bottom:16px;">
     <input id="skill-search" type="search" placeholder="Search skills…" autocomplete="off"
       style="width:100%;box-sizing:border-box;background:#0d0d0d;border:1px solid #2a2a2a;border-radius:8px;padding:10px 14px;font-size:0.875rem;color:var(--text);outline:none;font-family:var(--sans);">
-  </div>
-  <div id="filter-bar" style="display:none; align-items:center; gap:8px; margin-bottom:20px;">
-    <span style="font-size:0.75rem; color:var(--muted);">Filtered by</span>
-    <span id="filter-active-tag" class="skill-tag active"></span>
-    <button id="filter-clear" aria-label="Clear filter" style="background:none;border:none;color:var(--muted);cursor:pointer;padding:0;font-size:0.75rem;">✕ clear</button>
   </div>
   <div class="skills-grid">
 __SKILL_CARDS__
@@ -477,40 +469,34 @@ document.querySelectorAll('.copy-btn').forEach(btn => {
   });
 });
 
-let activeFilter = null;
+const activeFilters = new Set();
 let searchQuery = '';
-const filterBar = document.getElementById('filter-bar');
-const filterActiveTag = document.getElementById('filter-active-tag');
 const filterClear = document.getElementById('filter-clear');
 const searchInput = document.getElementById('skill-search');
 
 function updateCards() {
   const q = searchQuery.toLowerCase();
-  document.querySelectorAll('.skill-tag').forEach(t => t.classList.toggle('active', t.textContent.trim() === activeFilter));
+  document.querySelectorAll('.skill-tag').forEach(t => t.classList.toggle('active', activeFilters.has(t.textContent.trim())));
   document.querySelectorAll('.skill-card').forEach(card => {
     const tags = Array.from(card.querySelectorAll('.skill-tag')).map(t => t.textContent.trim());
     const text = card.textContent.toLowerCase();
-    const matchesFilter = activeFilter === null || tags.includes(activeFilter);
+    const matchesFilter = activeFilters.size === 0 || tags.some(t => activeFilters.has(t));
     const matchesSearch = q === '' || text.includes(q);
     card.classList.toggle('hidden', !matchesFilter || !matchesSearch);
   });
-  if (activeFilter) {
-    filterActiveTag.textContent = activeFilter;
-    filterBar.style.display = 'flex';
-  } else {
-    filterBar.style.display = 'none';
-  }
+  filterClear.style.display = activeFilters.size > 0 ? 'inline-block' : 'none';
 }
 
 document.querySelectorAll('.skill-tag').forEach(tag => {
   tag.addEventListener('click', () => {
     const keyword = tag.textContent.trim();
-    activeFilter = activeFilter === keyword ? null : keyword;
+    if (keyword === '✕ clear') return;
+    activeFilters.has(keyword) ? activeFilters.delete(keyword) : activeFilters.add(keyword);
     updateCards();
   });
 });
 
-filterClear.addEventListener('click', () => { activeFilter = null; updateCards(); });
+filterClear.addEventListener('click', () => { activeFilters.clear(); updateCards(); });
 
 searchInput.addEventListener('input', () => { searchQuery = searchInput.value; updateCards(); });
 </script>
@@ -562,9 +548,13 @@ def skill_card(skill):
 def build_html(skills):
     skill_cards_html = "\n".join(skill_card(s) for s in skills)
     skill_count = len(skills)
+    seen = set()
+    all_keywords = [k for s in skills for k in s["keywords"] if not (k in seen or seen.add(k))]
+    all_keywords_html = "".join(f'<span class="skill-tag">{k}</span>' for k in all_keywords)
     return (
         TEMPLATE
         .replace("__SKILL_COUNT__", str(skill_count))
+        .replace("__ALL_KEYWORDS__", all_keywords_html)
         .replace("__SKILL_CARDS__", skill_cards_html)
     )
 
