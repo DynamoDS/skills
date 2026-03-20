@@ -11,25 +11,40 @@
       "name": "dynamo-jira-ticket",
       "source": "./skills/dynamo-jira-ticket",
       "version": "2026.03.20",
-      "description": "Create structured Jira tickets for bugs, features, and triage",
+      "description": "Create structured Jira tickets for DynamoDS projects from bug reports, failing tests, or feature requests. Use this skill whenever writing a Jira ticket, triaging a bug, turning a vague issue into an actionable ticket, or writing acceptance criteria. Also use when the user mentions \"file a ticket\", \"write a bug report\", or \"create a Jira issue\" for a DynamoDS project.",
       "category": "workflow",
-      "keywords": ["jira", "tickets", "bug-report", "documentation"]
+      "keywords": [
+        "jira",
+        "tickets",
+        "bug-report",
+        "documentation"
+      ]
     },
     {
       "name": "dynamo-pr-description",
       "source": "./skills/dynamo-pr-description",
       "version": "2026.03.20",
-      "description": "Generate PR descriptions for DynamoDS repositories",
+      "description": "Generate PR descriptions for DynamoDS repositories that align with the team template. Use this skill whenever writing a pull request description, cleaning up a PR body, or generating a review-ready summary from a diff in a DynamoDS repo. Also use when the user says \"write a PR\", \"PR description\", or \"prep this for review.\"",
       "category": "development",
-      "keywords": ["pull-request", "pr", "documentation", "code-review"]
+      "keywords": [
+        "pull-request",
+        "pr",
+        "documentation",
+        "code-review"
+      ]
     },
     {
       "name": "dynamo-skill-writer",
       "source": "./skills/dynamo-skill-writer",
       "version": "2026.03.20",
-      "description": "Author and maintain agent skills across DynamoDS repos",
+      "description": "Author and maintain agent skills for DynamoDS repositories. Use this skill when creating a new skill, updating an existing skill, or ensuring skill content is consistent and well-structured across DynamoDS repos.",
       "category": "productivity",
-      "keywords": ["skills", "agents", "automation", "documentation"]
+      "keywords": [
+        "skills",
+        "agents",
+        "automation",
+        "documentation"
+      ]
     }
   ]
 }
