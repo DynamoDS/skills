@@ -427,7 +427,7 @@ __SKILL_CARDS__
     <p style="color: var(--muted); font-size: 0.95rem; margin-bottom: 16px;">Skills follow the <a href="https://agentskills.io/specification" target="_blank" rel="noopener" style="color: var(--accent); text-decoration: none;">agentskills.io</a> open spec and work with any agent-aware IDE.</p>
     <div class="other-ides">
       <div class="ide-card">
-        <h3><i class="fa-brands fa-microsoft"></i> VS Code + Copilot</h3>
+        <h3><img src="images/vscode-alt.png" alt="VS Code" style="width:18px;height:18px;vertical-align:middle;"> VS Code + Copilot</h3>
         <p>Copy any skill folder into your workspace:</p>
         <div class="code-wrap">
           <div class="code-block">cp -r skills/&lt;skill-name&gt; .github/agents/skills/</div>
@@ -436,7 +436,7 @@ __SKILL_CARDS__
         <p style="margin-top: 10px;">Copilot will pick up the skill automatically when you open an agent session. <a href="https://code.visualstudio.com/docs/copilot/customization/agent-skills" target="_blank" rel="noopener" style="color: var(--accent); text-decoration: none;">Learn more →</a></p>
       </div>
       <div class="ide-card">
-        <h3><i class="fa-solid fa-arrow-pointer"></i> Cursor</h3>
+        <h3><img src="images/cursor.png" alt="Cursor" style="width:18px;height:18px;border-radius:4px;vertical-align:middle;"> Cursor</h3>
         <p>Add as a remote rule in <strong>Cursor Settings → Rules for AI</strong>:</p>
         <div class="code-wrap">
           <div class="code-block">https://github.com/DynamoDS/skills.git</div>
