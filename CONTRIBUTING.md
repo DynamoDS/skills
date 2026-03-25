@@ -11,6 +11,7 @@ skills/
     scripts/       # optional: executable code
     references/    # optional: additional docs loaded on demand
     assets/        # optional: templates, data files
+    ...            # Any additional files or directories
 ```
 
 ### `SKILL.md` frontmatter
@@ -56,7 +57,7 @@ Keep `SKILL.md` under 500 lines. Move detailed reference material to `references
 Skills are validated automatically on pull requests. To run validation locally, install the validator and run it against your skill directory:
 
 ```sh
-go install github.com/agent-ecosystem/skill-validator/cmd/skill-validator@v1.2.1
+go install github.com/agent-ecosystem/skill-validator/cmd/skill-validator@latest
 skill-validator check --strict skills/dynamo-my-skill/
 ```
 
@@ -91,6 +92,7 @@ Open `docs/index.html` in a browser to preview. Both scripts run automatically o
 
 ## Pull request checklist
 
+- [ ] Skill added to the inventory table in `README.md`
 - [ ] Skill folder name matches the `name` field in `SKILL.md`
 - [ ] `name` uses only lowercase letters, numbers, and hyphens (no consecutive hyphens)
 - [ ] `description` clearly states what the skill does and when to use it
