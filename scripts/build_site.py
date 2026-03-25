@@ -430,7 +430,8 @@ __SKILL_CARDS__
         <h3><img src="images/vscode-alt.png" alt="VS Code" style="width:18px;height:18px;vertical-align:middle;"> VS Code</h3>
         <p>Copy any skill folder into your workspace:</p>
         <div class="code-wrap">
-          <div class="code-block">cp -r skills/&lt;skill-name&gt; .agents/skills/</div>
+          <div class="code-block">mkdir -p .agents/skills
+cp -r skills/&lt;skill-name&gt; .agents/skills/</div>
           <button class="copy-btn" aria-label="Copy"><i class="fa-regular fa-copy"></i></button>
         </div>
         <p style="margin-top: 10px;">The skill will be picked up automatically when you open an agent session. <a href="https://code.visualstudio.com/docs/copilot/customization/agent-skills" target="_blank" rel="noopener" style="color: var(--accent); text-decoration: none;">Learn more →</a></p>

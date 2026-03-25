@@ -57,7 +57,7 @@ Keep `SKILL.md` under 500 lines. Move detailed reference material to `references
 Skills are validated automatically on pull requests. To run validation locally, install the validator and run it against your skill directory:
 
 ```sh
-go install github.com/agent-ecosystem/skill-validator/cmd/skill-validator@v1.2.1
+go install github.com/agent-ecosystem/skill-validator/cmd/skill-validator@latest
 skill-validator check --strict skills/dynamo-my-skill/
 ```
 

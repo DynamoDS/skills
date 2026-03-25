@@ -72,13 +72,7 @@ If installed via the marketplace:
 /plugin update dynamo-skill-writer
 ```
 
-If loaded via `--plugin-dir` with a git submodule, pull the latest from the submodule:
-
-```bash
-git submodule update --remote /path/to/dynamo/skills
-```
-
-If loaded via `--plugin-dir` with a symlink, pull in the source repo:
+If loaded via `--plugin-dir`, pull in the source repo:
 
 ```bash
 cd /path/to/dynamo/skills && git pull
@@ -94,7 +88,25 @@ Choose the integration method that fits your workflow:
 git submodule add https://github.com/DynamoDS/skills.git .agents/dynamo-skills
 ```
 
-Then add the submodule path to `chat.agentSkillsLocations` in `.vscode/settings.json`:
+**Option B — Symlink:**
+
+```bash
+mkdir -p .agents
+ln -s /path/to/dynamo-skills/skills .agents/skills
+```
+
+Changes in the source repo are reflected immediately without any sync step.
+
+**Option C — Copy files:**
+
+```bash
+mkdir -p .agents/skills
+cp -r skills/dynamo-jira-ticket .agents/skills/
+cp -r skills/dynamo-pr-description .agents/skills/
+cp -r skills/dynamo-skill-writer .agents/skills/
+```
+
+For Options A and B, add the path to `chat.agentSkillsLocations` in `.vscode/settings.json`:
 
 ```json
 {
@@ -105,26 +117,7 @@ Then add the submodule path to `chat.agentSkillsLocations` in `.vscode/settings.
 }
 ```
 
-This appends to any existing skill locations rather than replacing them. Everyone who clones the repo gets the skills after running `git submodule update --init`.
-
-**Option B — Symlink:**
-
-```bash
-mkdir -p .agents/skills
-ln -s /path/to/dynamo-skills/skills .agents/skills
-```
-
-Changes in the source repo are reflected immediately without any sync step.
-
-**Option C — Copy files:**
-
-```bash
-cp -r skills/dynamo-jira-ticket .agents/skills/
-cp -r skills/dynamo-pr-description .agents/skills/
-cp -r skills/dynamo-skill-writer .agents/skills/
-```
-
-Type `/skills` in Copilot chat to browse and enable installed skills. See the [VS Code skills docs](https://code.visualstudio.com/docs/copilot/customization/agent-skills) for full details.
+See the [VS Code skills docs](https://code.visualstudio.com/docs/copilot/customization/agent-skills) for full details.
 
 ### Cursor
 
