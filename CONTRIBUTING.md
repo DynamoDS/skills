@@ -11,6 +11,7 @@ skills/
     scripts/       # optional: executable code
     references/    # optional: additional docs loaded on demand
     assets/        # optional: templates, data files
+    ...            # Any additional files or directories
 ```
 
 ### `SKILL.md` frontmatter
@@ -91,6 +92,7 @@ Open `docs/index.html` in a browser to preview. Both scripts run automatically o
 
 ## Pull request checklist
 
+- [ ] Skill added to the inventory table in `README.md`
 - [ ] Skill folder name matches the `name` field in `SKILL.md`
 - [ ] `name` uses only lowercase letters, numbers, and hyphens (no consecutive hyphens)
 - [ ] `description` clearly states what the skill does and when to use it

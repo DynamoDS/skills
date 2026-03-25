@@ -1,0 +1,12 @@
+{
+  "name": "dynamo-skills",
+  "description": "Shared Claude Code skills for the DynamoDS org",
+  "version": "2026.03.20",
+  "author": {
+    "name": "DynamoDS",
+    "url": "https://dynamobim.org/"
+  },
+  "homepage": "https://dynamods.github.io/skills",
+  "repository": "https://github.com/DynamoDS/skills",
+  "keywords": ["jira", "pull-request", "skills", "workflow"]
+}
