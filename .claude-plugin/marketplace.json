@@ -36,8 +36,8 @@
     {
       "name": "dynamo-skill-writer",
       "source": "./skills/dynamo-skill-writer",
-      "version": "2026.03.20",
-      "description": "Author and maintain agent skills for DynamoDS repositories. Use this skill when creating a new skill, updating an existing skill, or ensuring skill content is consistent and well-structured across DynamoDS repos.",
+      "version": "",
+      "description": "Author and maintain Dynamo agent skills. Use this skill whenever creating a new skill in .agents/skills/, updating an existing skill, fixing drift between canonical skills and Copilot/Cursor/Claude wrappers, or asking how to write effective skill instructions for the Dynamo repo.",
       "category": "productivity",
       "keywords": [
         "skills",
