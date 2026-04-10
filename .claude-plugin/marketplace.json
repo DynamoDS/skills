@@ -8,43 +8,9 @@
   },
   "plugins": [
     {
-      "name": "dynamo-jira-ticket",
-      "source": "./skills/dynamo-jira-ticket",
-      "version": "2026.03.20",
-      "description": "Create structured Jira tickets for DynamoDS projects from bug reports, failing tests, or feature requests. Use this skill whenever writing a Jira ticket, triaging a bug, turning a vague issue into an actionable ticket, or writing acceptance criteria. Also use when the user mentions \"file a ticket\", \"write a bug report\", or \"create a Jira issue\" for a DynamoDS project.",
-      "category": "workflow",
-      "keywords": [
-        "jira",
-        "tickets",
-        "bug-report",
-        "documentation"
-      ]
-    },
-    {
-      "name": "dynamo-pr-description",
-      "source": "./skills/dynamo-pr-description",
-      "version": "2026.03.20",
-      "description": "Generate PR descriptions for DynamoDS repositories that align with the team template. Use this skill whenever writing a pull request description, cleaning up a PR body, or generating a review-ready summary from a diff in a DynamoDS repo. Also use when the user says \"write a PR\", \"PR description\", or \"prep this for review.\"",
-      "category": "development",
-      "keywords": [
-        "pull-request",
-        "pr",
-        "documentation",
-        "code-review"
-      ]
-    },
-    {
-      "name": "dynamo-skill-writer",
-      "source": "./skills/dynamo-skill-writer",
-      "version": "",
-      "description": "Author and maintain Dynamo agent skills. Use this skill whenever creating a new skill in .agents/skills/, updating an existing skill, fixing drift between canonical skills and Copilot/Cursor/Claude wrappers, or asking how to write effective skill instructions for the Dynamo repo.",
-      "category": "productivity",
-      "keywords": [
-        "skills",
-        "agents",
-        "automation",
-        "documentation"
-      ]
+      "name": "dynamo-skills",
+      "source": "./",
+      "description": "Shared Claude Code skills for the DynamoDS org"
     }
   ]
 }

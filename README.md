@@ -21,7 +21,7 @@ skills/
 ├── dynamo-jira-ticket/
 │   ├── SKILL.md
 │   └── assets/
-│       └── template.md       ← Jira ticket template
+│       └── template.md
 ├── dynamo-pr-description/
 │   └── SKILL.md
 └── dynamo-skill-writer/
@@ -32,9 +32,7 @@ skills/
 
 ### Claude Code
 
-This repository is configured as a Claude plugin marketplace. Install skills directly from Claude Code.
-
-**Option A — Via marketplace:**
+This repository is a single Claude plugin (`dynamo-skills`) containing all skills. One install brings everything in.
 
 **1. Add the marketplace (one-time setup):**
 
@@ -42,103 +40,47 @@ This repository is configured as a Claude plugin marketplace. Install skills dir
 /plugin marketplace add DynamoDS/skills
 ```
 
-**2. Install individual skills:**
+**2. Install the plugin:**
 
 ```
-/plugin install dynamo-jira-ticket@dynamo-skills
-/plugin install dynamo-pr-description@dynamo-skills
-/plugin install dynamo-skill-writer@dynamo-skills
+/plugin install dynamo-skills
 ```
 
 **3. Use a skill:**
 
-Once installed, skills are available automatically based on context. You can also invoke them explicitly:
+Skills are available automatically based on context. You can also invoke them explicitly with a slash command:
 
-> "Use the dynamo-jira-ticket skill to file a bug for this error"
-
-**Option B — Directly as a plugin** (using `.claude-plugin/plugin.json`, loads all skills without going through the marketplace):
-
-```bash
-claude --plugin-dir /path/to/dynamo/skills
+```
+/dynamo-jira-ticket
+/dynamo-pr-description
+/dynamo-skill-writer
 ```
 
-**Updating skills:**
+**Updating:**
 
-If installed via the marketplace:
-
-```text
-/plugin update dynamo-jira-ticket
-/plugin update dynamo-pr-description
-/plugin update dynamo-skill-writer
 ```
-
-If loaded via `--plugin-dir`, pull in the source repo:
-
-```bash
-cd /path/to/dynamo/skills && git pull
+/plugin update dynamo-skills
 ```
 
 ### VS Code
 
-Choose the integration method that fits your workflow:
-
-**Option A — Git submodule:**
+Add as a git submodule and point `chat.agentSkillsLocations` at it:
 
 ```bash
 git submodule add https://github.com/DynamoDS/skills.git .agents/dynamo-skills
 ```
 
-**Option B — Symlink:**
-
-```bash
-mkdir -p .agents
-ln -s /path/to/dynamo-skills/skills .agents/skills
-```
-
-Changes in the source repo are reflected immediately without any sync step.
-
-**Option C — Copy files:**
-
-```bash
-mkdir -p .agents/skills
-cp -r skills/dynamo-jira-ticket .agents/skills/
-cp -r skills/dynamo-pr-description .agents/skills/
-cp -r skills/dynamo-skill-writer .agents/skills/
-```
-
-For Options A and B, add the path to `chat.agentSkillsLocations` in `.vscode/settings.json`:
+`.vscode/settings.json`:
 
 ```json
 {
-  "chat.agentSkillsLocations": [
-    ".agents/skills",
-    ".agents/dynamo-skills/skills"
-  ]
+  "chat.agentSkillsLocations": [".agents/dynamo-skills/skills"]
 }
 ```
 
-See the [VS Code skills docs](https://code.visualstudio.com/docs/copilot/customization/agent-skills) for full details.
+See the [VS Code skills docs](https://code.visualstudio.com/docs/copilot/customization/agent-skills) for full details. Alternatively, symlink the `skills/` folder or copy individual skill folders into `.agents/skills/`.
 
 ### Cursor
-
-Choose the integration method that fits your workflow:
-
-**Option A — Git submodule:**
-
-```bash
-git submodule add https://github.com/DynamoDS/skills.git .cursor/dynamo-skills
-ln -s "$(pwd)/.cursor/dynamo-skills/skills" .cursor/skills
-```
-
-Cursor scans `.cursor/skills/` automatically — the symlink points it at the submodule contents.
-
-**Option B — Symlink:**
-
-```bash
-ln -s /path/to/dynamo-skills/skills .cursor/skills
-```
-
-**Option C — Remote rule:**
 
 Go to **Settings → Rules → Add Rule → Remote Rule (GitHub)** and paste:
 
@@ -146,30 +88,7 @@ Go to **Settings → Rules → Add Rule → Remote Rule (GitHub)** and paste:
 https://github.com/DynamoDS/skills.git
 ```
 
-Cursor will fetch the skills automatically. Once added, invoke a skill by typing `/` followed by its name in the Agent chat (e.g. `/dynamo-jira-ticket`). See the [Cursor skills docs](https://cursor.com/docs/skills) for full details.
-
-## Repo-specific variants
-
-The skills in this repository are **org-level shared skills**. Individual DynamoDS repositories may maintain their own repo-specific variants in `.agents/skills/` to tailor content to that repo's architecture, templates, and tooling.
-
-When a repo-specific variant exists, use it. Fall back to these shared skills when no repo-specific version is available.
-
-## Validation
-
-Skills are validated on every pull request using [`skill-validator`](https://github.com/agent-ecosystem/skill-validator).
-
-To validate locally:
-
-```bash
-# Install the validator
-go install github.com/agent-ecosystem/skill-validator/cmd/skill-validator@latest
-
-# Validate a single skill
-skill-validator check --strict skills/dynamo-jira-ticket/
-
-# Validate all skills
-skill-validator check --strict skills/
-```
+Cursor will fetch the skills automatically. See the [Cursor skills docs](https://cursor.com/docs/skills) for full details. Alternatively, symlink the `skills/` folder to `.cursor/skills/`.
 
 ## Contributing
 

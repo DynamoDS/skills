@@ -1,12 +1,18 @@
 {
   "name": "dynamo-skills",
   "description": "Shared Claude Code skills for the DynamoDS org",
-  "version": "2026.03.20",
+  "version": "2026.04.09",
   "author": {
-    "name": "DynamoDS",
-    "url": "https://dynamobim.org/"
+    "name": "DynamoDS"
   },
   "homepage": "https://dynamods.github.io/skills",
   "repository": "https://github.com/DynamoDS/skills",
-  "keywords": ["jira", "pull-request", "skills", "workflow"]
+  "license": "MIT",
+  "keywords": [
+    "workflow",
+    "jira",
+    "pull-request",
+    "skills",
+    "automation"
+  ]
 }

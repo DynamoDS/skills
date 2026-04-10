@@ -1,8 +1,6 @@
 ---
 name: dynamo-pr-description
 description: Generate PR descriptions for DynamoDS repositories that align with the team template. Use this skill whenever writing a pull request description, cleaning up a PR body, or generating a review-ready summary from a diff in a DynamoDS repo. Also use when the user says "write a PR", "PR description", or "prep this for review."
-metadata:
-  version: "2026.03.20"
 ---
 
 # Dynamo PR Description

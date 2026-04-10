@@ -1,8 +1,6 @@
 ---
 name: dynamo-jira-ticket
 description: Create structured Jira tickets for DynamoDS projects from bug reports, failing tests, or feature requests. Use this skill whenever writing a Jira ticket, triaging a bug, turning a vague issue into an actionable ticket, or writing acceptance criteria. Also use when the user mentions "file a ticket", "write a bug report", or "create a Jira issue" for a DynamoDS project.
-metadata:
-  version: "2026.03.20"
 ---
 
 # Dynamo Jira Ticket

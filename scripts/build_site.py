@@ -1,12 +1,20 @@
 #!/usr/bin/env python3
 """
-Build docs/index.html from .claude-plugin/marketplace.json.
+Build docs/index.html from skills/ directory.
 Run from the repository root.
 """
 
-import json
 import re
 from pathlib import Path
+
+import yaml
+
+def parse_frontmatter(text):
+    m = re.match(r"^---\n(.*?)\n---", text, re.DOTALL)
+    if not m:
+        return {}
+    return yaml.safe_load(m.group(1)) or {}
+
 
 ICONS = {
     "jira":  '<i class="fa-brands fa-jira"></i>',
@@ -21,12 +29,10 @@ SKILL_CARD_TEMPLATE = """\
     <div class="skill-icon">__SKILL_ICON__</div>
     <div class="skill-name">__SKILL_SLUG__</div>
     <h3>__SKILL_TITLE__</h3>
-    <div class="skill-version">v__SKILL_VERSION__</div>
     <p>__SKILL_DESC__</p>
-    <div class="skill-keywords">__SKILL_KEYWORDS__</div>
   </div>
   <div class="code-wrap">
-    <div class="code-block">/plugin install __SKILL_SLUG__@dynamo-skills</div>
+    <div class="code-block">/__SKILL_SLUG__</div>
     <button class="copy-btn" aria-label="Copy"><i class="fa-regular fa-copy"></i></button>
   </div>
 </div>
@@ -127,58 +133,6 @@ TEMPLATE = """\
 
     .hero h1 span { color: var(--accent); }
 
-    .badge-row {
-      display: flex;
-      gap: 8px;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-bottom: 12px;
-    }
-    .hero-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      justify-content: center;
-      margin-top: 4px;
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 0.75rem;
-      border: 1px solid var(--border);
-      color: var(--muted);
-      background: var(--surface);
-    }
-
-    .cta-row {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      padding: 10px 20px;
-      border-radius: 8px;
-      font-size: 0.875rem;
-      font-weight: 500;
-      text-decoration: none;
-      transition: all 0.15s;
-      border: none;
-    }
-
-    .btn-primary { background: var(--accent); color: #fff; }
-    .btn-primary:hover { background: #6aadff; }
-    .btn-secondary { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
-    .btn-secondary:hover { border-color: #444; background: #1c1c1c; }
-
     section {
       max-width: 1100px;
       margin: 0 auto;
@@ -253,13 +207,6 @@ TEMPLATE = """\
       margin-bottom: 8px;
     }
 
-    .skill-version {
-      font-size: 0.72rem;
-      font-family: var(--mono);
-      color: var(--muted);
-      margin-bottom: 8px;
-    }
-
     .skill-card p {
       font-size: 0.875rem;
       color: var(--muted);
@@ -267,46 +214,21 @@ TEMPLATE = """\
       margin-bottom: 12px;
     }
 
-    .skill-keywords {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 16px;
-    }
-    .skill-keywords:empty { display: none; }
-    .skill-tag {
-      font-size: 0.7rem;
-      font-family: var(--mono);
-      color: var(--muted);
-      background: #111;
-      border: 1px solid #222;
-      border-radius: 4px;
-      padding: 2px 7px;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-    .skill-tag:hover { color: var(--text); border-color: #444; }
     #skill-search:focus { border-color: #444; }
     #skill-search::placeholder { color: #555; }
-    .skill-tag.active { color: var(--accent); border-color: var(--accent); background: #0d1f2d; }
     .skill-card.hidden { display: none; }
 
     .code-block {
       background: #0a0a0a;
       border: 1px solid #1e1e1e;
       border-radius: 8px;
-      padding: 12px 40px 12px 14px;
+      padding: 12px 52px 12px 14px;
       font-family: var(--mono);
       font-size: 0.8rem;
       color: #cdd6f4;
-      overflow-x: auto;
-      white-space: pre;
-    }
-
-    .skill-card .code-block {
+      overflow-x: hidden;
       white-space: pre-wrap;
       word-break: break-all;
-      overflow-x: hidden;
     }
 
     .other-ides {
@@ -405,19 +327,27 @@ TEMPLATE = """\
   <div style="margin-bottom: 32px;">
     <div class="section-label">Get started</div>
     <h2 style="font-size: 1.2rem; margin-bottom: 8px;">Install as a Claude plugin</h2>
-    <p style="color: var(--muted); font-size: 0.95rem; margin-bottom: 16px;">Register the DynamoDS skills repo once, then install any skill on demand.</p>
-    <div class="code-wrap">
-      <div class="code-block">/plugin marketplace add DynamoDS/skills</div>
-      <button class="copy-btn" aria-label="Copy"><i class="fa-regular fa-copy"></i></button>
+    <p style="color: var(--muted); font-size: 0.95rem; margin-bottom: 16px;">One install brings all skills into Claude Code. Add the marketplace, then install the plugin.</p>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div>
+        <div style="font-size:0.75rem;color:var(--muted);font-family:var(--mono);margin-bottom:5px;">1. Add the marketplace</div>
+        <div class="code-wrap">
+          <div class="code-block">/plugin marketplace add DynamoDS/skills</div>
+          <button class="copy-btn" aria-label="Copy"><i class="fa-regular fa-copy"></i></button>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:0.75rem;color:var(--muted);font-family:var(--mono);margin-bottom:5px;">2. Install the plugin</div>
+        <div class="code-wrap">
+          <div class="code-block">/plugin install dynamo-skills</div>
+          <button class="copy-btn" aria-label="Copy"><i class="fa-regular fa-copy"></i></button>
+        </div>
+      </div>
     </div>
-  </div>
-  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
-    <div class="hero-tags" style="justify-content:flex-start;margin-top:0;">__ALL_KEYWORDS__</div>
-    <button id="filter-clear" aria-label="Clear filter" style="display:none;background:none;border:1px solid #333;border-radius:4px;color:var(--muted);cursor:pointer;padding:2px 8px;font-size:0.7rem;font-family:var(--mono);white-space:nowrap;">✕ clear</button>
   </div>
   <div style="margin-bottom:16px;">
     <input id="skill-search" type="search" placeholder="Search skills…" autocomplete="off"
-      style="width:100%;box-sizing:border-box;background:#0d0d0d;border:1px solid #2a2a2a;border-radius:8px;padding:10px 14px;font-size:0.875rem;color:var(--text);outline:none;font-family:var(--sans);">
+      style="width:100%;box-sizing:border-box;background:#0d0d0d;border:1px solid #2a2a2a;border-radius:8px;padding:10px 14px;font-size:0.875rem;color:var(--text);outline:none;font-family:var(--font);">
   </div>
   <div class="skills-grid">
 __SKILL_CARDS__
@@ -428,13 +358,12 @@ __SKILL_CARDS__
     <div class="other-ides">
       <div class="ide-card">
         <h3><img src="images/vscode-alt.png" alt="VS Code" style="width:18px;height:18px;vertical-align:middle;"> VS Code</h3>
-        <p>Copy any skill folder into your workspace:</p>
+        <p>Add as a git submodule and point <code style="font-family:var(--mono);font-size:0.8rem;">chat.agentSkillsLocations</code> at it:</p>
         <div class="code-wrap">
-          <div class="code-block">mkdir -p .agents/skills
-cp -r skills/&lt;skill-name&gt; .agents/skills/</div>
+          <div class="code-block">git submodule add https://github.com/DynamoDS/skills.git .agents/dynamo-skills</div>
           <button class="copy-btn" aria-label="Copy"><i class="fa-regular fa-copy"></i></button>
         </div>
-        <p style="margin-top: 10px;">The skill will be picked up automatically when you open an agent session. <a href="https://code.visualstudio.com/docs/copilot/customization/agent-skills" target="_blank" rel="noopener" style="color: var(--accent); text-decoration: none;">Learn more →</a></p>
+        <p style="margin-top: 10px;"><a href="https://code.visualstudio.com/docs/copilot/customization/agent-skills" target="_blank" rel="noopener" style="color: var(--accent); text-decoration: none;">Learn more →</a></p>
       </div>
       <div class="ide-card">
         <h3><img src="images/cursor.png" alt="Cursor" style="width:18px;height:18px;border-radius:4px;vertical-align:middle;"> Cursor</h3>
@@ -471,53 +400,23 @@ document.querySelectorAll('.copy-btn').forEach(btn => {
   });
 });
 
-const activeFilters = new Set();
-let searchQuery = '';
-const filterClear = document.getElementById('filter-clear');
 const searchInput = document.getElementById('skill-search');
 
-function updateCards() {
-  const q = searchQuery.toLowerCase();
-  document.querySelectorAll('.skill-tag').forEach(t => t.classList.toggle('active', activeFilters.has(t.textContent.trim())));
+searchInput.addEventListener('input', () => {
+  const q = searchInput.value.toLowerCase();
   document.querySelectorAll('.skill-card').forEach(card => {
-    const tags = Array.from(card.querySelectorAll('.skill-tag')).map(t => t.textContent.trim());
-    const text = card.textContent.toLowerCase();
-    const matchesFilter = activeFilters.size === 0 || tags.some(t => activeFilters.has(t));
-    const matchesSearch = q === '' || text.includes(q);
-    card.classList.toggle('hidden', !matchesFilter || !matchesSearch);
-  });
-  filterClear.style.display = activeFilters.size > 0 ? 'inline-block' : 'none';
-}
-
-document.querySelectorAll('.skill-tag').forEach(tag => {
-  tag.addEventListener('click', () => {
-    const keyword = tag.textContent.trim();
-    if (keyword === '✕ clear') return;
-    activeFilters.has(keyword) ? activeFilters.delete(keyword) : activeFilters.add(keyword);
-    updateCards();
+    card.classList.toggle('hidden', q !== '' && !card.textContent.toLowerCase().includes(q));
   });
 });
-
-filterClear.addEventListener('click', () => { activeFilters.clear(); updateCards(); });
-
-searchInput.addEventListener('input', () => { searchQuery = searchInput.value; updateCards(); });
 </script>
 </body>
 </html>
 """
 
 
-def h1_title(skill_md_path):
-    try:
-        text = skill_md_path.read_text(encoding="utf-8")
-        m = re.search(r"^# (.+)", text, re.MULTILINE)
-        return m.group(1).strip() if m else None
-    except OSError:
-        return None
-
-
-def human_name(slug):
-    return " ".join(p.capitalize() for p in slug.split("-"))
+def h1_title(text):
+    m = re.search(r"^# (.+)", text, re.MULTILINE)
+    return m.group(1).strip() if m else None
 
 
 def pick_icon(name):
@@ -535,43 +434,33 @@ def short_desc(description, limit=130):
 
 def skill_card(skill):
     icon = ICONS.get(skill["icon_key"], DEFAULT_ICON)
-    keywords_html = "".join(f'<span class="skill-tag">{k}</span>' for k in skill["keywords"])
     return (
         SKILL_CARD_TEMPLATE
         .replace("__SKILL_ICON__", icon)
         .replace("__SKILL_SLUG__", skill["slug"])
         .replace("__SKILL_TITLE__", skill["title"])
-        .replace("__SKILL_VERSION__", skill["version"])
         .replace("__SKILL_DESC__", skill["description"])
-        .replace("__SKILL_KEYWORDS__", keywords_html)
     )
 
 
 def build_html(skills):
-    skill_cards_html = "\n".join(skill_card(s) for s in skills)
-    skill_count = len(skills)
-    seen = set()
-    all_keywords = [k for s in skills for k in s["keywords"] if not (k in seen or seen.add(k))]
-    all_keywords_html = "".join(f'<span class="skill-tag">{k}</span>' for k in all_keywords)
-    return (
-        TEMPLATE
-        .replace("__SKILL_COUNT__", str(skill_count))
-        .replace("__ALL_KEYWORDS__", all_keywords_html)
-        .replace("__SKILL_CARDS__", skill_cards_html)
-    )
+    return TEMPLATE.replace("__SKILL_CARDS__", "\n".join(skill_card(s) for s in skills))
 
 
-manifest = json.loads(Path(".claude-plugin/marketplace.json").read_text(encoding="utf-8"))
 skills = []
-for plugin in manifest.get("plugins", []):
-    slug = plugin["name"]
-    source = Path(plugin["source"])
+for skill_dir in sorted(Path("skills").iterdir()):
+    skill_file = skill_dir / "SKILL.md"
+    if not skill_file.exists():
+        continue
+    text = skill_file.read_text(encoding="utf-8")
+    fm = parse_frontmatter(text)
+    if not fm:
+        continue
+    slug = fm.get("name", skill_dir.name)
     skills.append({
         "slug": slug,
-        "title": h1_title(source / "SKILL.md") or human_name(slug),
-        "description": short_desc(plugin.get("description", "")),
-        "version": plugin.get("version", ""),
-        "keywords": plugin.get("keywords", []),
+        "title": h1_title(text) or slug,
+        "description": short_desc(fm.get("description", "")),
         "icon_key": pick_icon(slug),
     })
 

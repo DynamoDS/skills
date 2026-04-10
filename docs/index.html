@@ -92,58 +92,6 @@
 
     .hero h1 span { color: var(--accent); }
 
-    .badge-row {
-      display: flex;
-      gap: 8px;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-bottom: 12px;
-    }
-    .hero-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      justify-content: center;
-      margin-top: 4px;
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 0.75rem;
-      border: 1px solid var(--border);
-      color: var(--muted);
-      background: var(--surface);
-    }
-
-    .cta-row {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      padding: 10px 20px;
-      border-radius: 8px;
-      font-size: 0.875rem;
-      font-weight: 500;
-      text-decoration: none;
-      transition: all 0.15s;
-      border: none;
-    }
-
-    .btn-primary { background: var(--accent); color: #fff; }
-    .btn-primary:hover { background: #6aadff; }
-    .btn-secondary { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
-    .btn-secondary:hover { border-color: #444; background: #1c1c1c; }
-
     section {
       max-width: 1100px;
       margin: 0 auto;
@@ -218,13 +166,6 @@
       margin-bottom: 8px;
     }
 
-    .skill-version {
-      font-size: 0.72rem;
-      font-family: var(--mono);
-      color: var(--muted);
-      margin-bottom: 8px;
-    }
-
     .skill-card p {
       font-size: 0.875rem;
       color: var(--muted);
@@ -232,46 +173,21 @@
       margin-bottom: 12px;
     }
 
-    .skill-keywords {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 16px;
-    }
-    .skill-keywords:empty { display: none; }
-    .skill-tag {
-      font-size: 0.7rem;
-      font-family: var(--mono);
-      color: var(--muted);
-      background: #111;
-      border: 1px solid #222;
-      border-radius: 4px;
-      padding: 2px 7px;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-    .skill-tag:hover { color: var(--text); border-color: #444; }
     #skill-search:focus { border-color: #444; }
     #skill-search::placeholder { color: #555; }
-    .skill-tag.active { color: var(--accent); border-color: var(--accent); background: #0d1f2d; }
     .skill-card.hidden { display: none; }
 
     .code-block {
       background: #0a0a0a;
       border: 1px solid #1e1e1e;
       border-radius: 8px;
-      padding: 12px 40px 12px 14px;
+      padding: 12px 52px 12px 14px;
       font-family: var(--mono);
       font-size: 0.8rem;
       color: #cdd6f4;
-      overflow-x: auto;
-      white-space: pre;
-    }
-
-    .skill-card .code-block {
+      overflow-x: hidden;
       white-space: pre-wrap;
       word-break: break-all;
-      overflow-x: hidden;
     }
 
     .other-ides {
@@ -370,19 +286,27 @@
   <div style="margin-bottom: 32px;">
     <div class="section-label">Get started</div>
     <h2 style="font-size: 1.2rem; margin-bottom: 8px;">Install as a Claude plugin</h2>
-    <p style="color: var(--muted); font-size: 0.95rem; margin-bottom: 16px;">Register the DynamoDS skills repo once, then install any skill on demand.</p>
-    <div class="code-wrap">
-      <div class="code-block">/plugin marketplace add DynamoDS/skills</div>
-      <button class="copy-btn" aria-label="Copy"><i class="fa-regular fa-copy"></i></button>
+    <p style="color: var(--muted); font-size: 0.95rem; margin-bottom: 16px;">One install brings all skills into Claude Code. Add the marketplace, then install the plugin.</p>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div>
+        <div style="font-size:0.75rem;color:var(--muted);font-family:var(--mono);margin-bottom:5px;">1. Add the marketplace</div>
+        <div class="code-wrap">
+          <div class="code-block">/plugin marketplace add DynamoDS/skills</div>
+          <button class="copy-btn" aria-label="Copy"><i class="fa-regular fa-copy"></i></button>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:0.75rem;color:var(--muted);font-family:var(--mono);margin-bottom:5px;">2. Install the plugin</div>
+        <div class="code-wrap">
+          <div class="code-block">/plugin install dynamo-skills</div>
+          <button class="copy-btn" aria-label="Copy"><i class="fa-regular fa-copy"></i></button>
+        </div>
+      </div>
     </div>
-  </div>
-  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
-    <div class="hero-tags" style="justify-content:flex-start;margin-top:0;"><span class="skill-tag">jira</span><span class="skill-tag">tickets</span><span class="skill-tag">bug-report</span><span class="skill-tag">documentation</span><span class="skill-tag">pull-request</span><span class="skill-tag">pr</span><span class="skill-tag">code-review</span><span class="skill-tag">skills</span><span class="skill-tag">agents</span><span class="skill-tag">automation</span></div>
-    <button id="filter-clear" aria-label="Clear filter" style="display:none;background:none;border:1px solid #333;border-radius:4px;color:var(--muted);cursor:pointer;padding:2px 8px;font-size:0.7rem;font-family:var(--mono);white-space:nowrap;">✕ clear</button>
   </div>
   <div style="margin-bottom:16px;">
     <input id="skill-search" type="search" placeholder="Search skills…" autocomplete="off"
-      style="width:100%;box-sizing:border-box;background:#0d0d0d;border:1px solid #2a2a2a;border-radius:8px;padding:10px 14px;font-size:0.875rem;color:var(--text);outline:none;font-family:var(--sans);">
+      style="width:100%;box-sizing:border-box;background:#0d0d0d;border:1px solid #2a2a2a;border-radius:8px;padding:10px 14px;font-size:0.875rem;color:var(--text);outline:none;font-family:var(--font);">
   </div>
   <div class="skills-grid">
 <div class="skill-card">
@@ -390,12 +314,10 @@
     <div class="skill-icon"><i class="fa-brands fa-jira"></i></div>
     <div class="skill-name">dynamo-jira-ticket</div>
     <h3>Dynamo Jira Ticket</h3>
-    <div class="skill-version">v2026.03.20</div>
     <p>Create structured Jira tickets for DynamoDS projects from bug reports, failing tests, or feature requests.</p>
-    <div class="skill-keywords"><span class="skill-tag">jira</span><span class="skill-tag">tickets</span><span class="skill-tag">bug-report</span><span class="skill-tag">documentation</span></div>
   </div>
   <div class="code-wrap">
-    <div class="code-block">/plugin install dynamo-jira-ticket@dynamo-skills</div>
+    <div class="code-block">/dynamo-jira-ticket</div>
     <button class="copy-btn" aria-label="Copy"><i class="fa-regular fa-copy"></i></button>
   </div>
 </div>
@@ -405,12 +327,10 @@
     <div class="skill-icon"><i class="fa-solid fa-code-pull-request"></i></div>
     <div class="skill-name">dynamo-pr-description</div>
     <h3>Dynamo PR Description</h3>
-    <div class="skill-version">v2026.03.20</div>
     <p>Generate PR descriptions for DynamoDS repositories that align with the team template.</p>
-    <div class="skill-keywords"><span class="skill-tag">pull-request</span><span class="skill-tag">pr</span><span class="skill-tag">documentation</span><span class="skill-tag">code-review</span></div>
   </div>
   <div class="code-wrap">
-    <div class="code-block">/plugin install dynamo-pr-description@dynamo-skills</div>
+    <div class="code-block">/dynamo-pr-description</div>
     <button class="copy-btn" aria-label="Copy"><i class="fa-regular fa-copy"></i></button>
   </div>
 </div>
@@ -420,12 +340,10 @@
     <div class="skill-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
     <div class="skill-name">dynamo-skill-writer</div>
     <h3>Dynamo Skill Writer</h3>
-    <div class="skill-version">v</div>
     <p>Author and maintain Dynamo agent skills.</p>
-    <div class="skill-keywords"><span class="skill-tag">skills</span><span class="skill-tag">agents</span><span class="skill-tag">automation</span><span class="skill-tag">documentation</span></div>
   </div>
   <div class="code-wrap">
-    <div class="code-block">/plugin install dynamo-skill-writer@dynamo-skills</div>
+    <div class="code-block">/dynamo-skill-writer</div>
     <button class="copy-btn" aria-label="Copy"><i class="fa-regular fa-copy"></i></button>
   </div>
 </div>
@@ -437,13 +355,12 @@
     <div class="other-ides">
       <div class="ide-card">
         <h3><img src="images/vscode-alt.png" alt="VS Code" style="width:18px;height:18px;vertical-align:middle;"> VS Code</h3>
-        <p>Copy any skill folder into your workspace:</p>
+        <p>Add as a git submodule and point <code style="font-family:var(--mono);font-size:0.8rem;">chat.agentSkillsLocations</code> at it:</p>
         <div class="code-wrap">
-          <div class="code-block">mkdir -p .agents/skills
-cp -r skills/&lt;skill-name&gt; .agents/skills/</div>
+          <div class="code-block">git submodule add https://github.com/DynamoDS/skills.git .agents/dynamo-skills</div>
           <button class="copy-btn" aria-label="Copy"><i class="fa-regular fa-copy"></i></button>
         </div>
-        <p style="margin-top: 10px;">The skill will be picked up automatically when you open an agent session. <a href="https://code.visualstudio.com/docs/copilot/customization/agent-skills" target="_blank" rel="noopener" style="color: var(--accent); text-decoration: none;">Learn more →</a></p>
+        <p style="margin-top: 10px;"><a href="https://code.visualstudio.com/docs/copilot/customization/agent-skills" target="_blank" rel="noopener" style="color: var(--accent); text-decoration: none;">Learn more →</a></p>
       </div>
       <div class="ide-card">
         <h3><img src="images/cursor.png" alt="Cursor" style="width:18px;height:18px;border-radius:4px;vertical-align:middle;"> Cursor</h3>
@@ -480,36 +397,14 @@ document.querySelectorAll('.copy-btn').forEach(btn => {
   });
 });
 
-const activeFilters = new Set();
-let searchQuery = '';
-const filterClear = document.getElementById('filter-clear');
 const searchInput = document.getElementById('skill-search');
 
-function updateCards() {
-  const q = searchQuery.toLowerCase();
-  document.querySelectorAll('.skill-tag').forEach(t => t.classList.toggle('active', activeFilters.has(t.textContent.trim())));
+searchInput.addEventListener('input', () => {
+  const q = searchInput.value.toLowerCase();
   document.querySelectorAll('.skill-card').forEach(card => {
-    const tags = Array.from(card.querySelectorAll('.skill-tag')).map(t => t.textContent.trim());
-    const text = card.textContent.toLowerCase();
-    const matchesFilter = activeFilters.size === 0 || tags.some(t => activeFilters.has(t));
-    const matchesSearch = q === '' || text.includes(q);
-    card.classList.toggle('hidden', !matchesFilter || !matchesSearch);
-  });
-  filterClear.style.display = activeFilters.size > 0 ? 'inline-block' : 'none';
-}
-
-document.querySelectorAll('.skill-tag').forEach(tag => {
-  tag.addEventListener('click', () => {
-    const keyword = tag.textContent.trim();
-    if (keyword === '✕ clear') return;
-    activeFilters.has(keyword) ? activeFilters.delete(keyword) : activeFilters.add(keyword);
-    updateCards();
+    card.classList.toggle('hidden', q !== '' && !card.textContent.toLowerCase().includes(q));
   });
 });
-
-filterClear.addEventListener('click', () => { activeFilters.clear(); updateCards(); });
-
-searchInput.addEventListener('input', () => { searchQuery = searchInput.value; updateCards(); });
 </script>
 </body>
 </html>
