@@ -413,7 +413,10 @@ TEMPLATE = """\
     <div class="tab-panel" id="tab-vscode">
       <div class="setup-step">Copy skills into your repo</div>
       <p class="setup-note">Drop skill folders directly into <code style="font-family:var(--mono);font-size:0.85em;">.github/skills/</code>, <code style="font-family:var(--mono);font-size:0.85em;">.agents/skills/</code>, or <code style="font-family:var(--mono);font-size:0.85em;">.claude/skills/</code> — VS Code discovers those automatically, no settings required.</p>
-      <p class="setup-note" style="margin-top:8px;">To keep skills in sync as a git submodule instead, add the repo and point <code style="font-family:var(--mono);font-size:0.85em;">chat.skillsLocations</code> at the <code style="font-family:var(--mono);font-size:0.85em;">skills/</code> subfolder in your <code style="font-family:var(--mono);font-size:0.85em;">.vscode/settings.json</code>.</p>
+      <p class="setup-note" style="margin-top:8px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;">
+        <span>To keep skills in sync as a git submodule instead, add the repo and point <code style="font-family:var(--mono);font-size:0.85em;">chat.skillsLocations</code> at the <code style="font-family:var(--mono);font-size:0.85em;">skills/</code> subfolder in your <code style="font-family:var(--mono);font-size:0.85em;">.vscode/settings.json</code>.</span>
+        <a href="vscode://settings/chat.skillsLocations" style="display:inline-flex;align-items:center;gap:5px;background:var(--accent);color:#fff;padding:4px 10px;border-radius:6px;font-size:0.8rem;text-decoration:none;font-weight:600;white-space:nowrap;"><i class="fa-solid fa-code"></i> Open in VS Code</a>
+      </p>
       <p class="setup-note" style="margin-top:12px;"><a href="https://code.visualstudio.com/docs/copilot/customization/agent-skills#_use-shared-skills" target="_blank" rel="noopener" style="color:var(--accent);">Shared skills documentation ↗</a></p>
     </div>
 
