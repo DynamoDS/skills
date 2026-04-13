@@ -62,33 +62,39 @@ Skills are available automatically based on context. You can also invoke them ex
 /plugin update dynamo-skills
 ```
 
+See the [Claude skills docs](https://claude.com/docs/skills/how-to) for full details.
+
+### GitHub Copilot
+
+Copy individual skill folders into `.github/skills/`, `.agents/skills/`, or `.claude/skills/` for project-level access, or `~/.copilot/skills/` for personal skills shared across all projects. Copilot discovers them automatically.
+
+In the CLI, use `/skill-name` to invoke a skill explicitly, or `/skills list` to see what's available.
+
+See the [GitHub Copilot agent skills docs](https://docs.github.com/en/copilot/concepts/agents/about-agent-skills) for full details.
+
 ### VS Code
 
-Add as a git submodule and point `chat.agentSkillsLocations` at it:
+Copy individual skill folders directly into `.github/skills/`, `.agents/skills/`, or `.claude/skills/` — VS Code discovers those paths automatically, no settings required.
+
+Alternatively, add this repo as a git submodule and point `chat.skillsLocations` at the `skills/` subfolder in `.vscode/settings.json`:
 
 ```bash
 git submodule add https://github.com/DynamoDS/skills.git .agents/dynamo-skills
 ```
 
-`.vscode/settings.json`:
-
 ```json
 {
-  "chat.agentSkillsLocations": [".agents/dynamo-skills/skills"]
+  "chat.skillsLocations": [".agents/dynamo-skills/skills"]
 }
 ```
 
-See the [VS Code skills docs](https://code.visualstudio.com/docs/copilot/customization/agent-skills) for full details. Alternatively, symlink the `skills/` folder or copy individual skill folders into `.agents/skills/`.
+See the [VS Code shared skills docs](https://code.visualstudio.com/docs/copilot/customization/agent-skills#_use-shared-skills) for full details.
 
 ### Cursor
 
-Go to **Settings → Rules → Add Rule → Remote Rule (GitHub)** and paste:
+Copy individual skill folders into `.cursor/skills/` in your project, or `~/.cursor/skills/` for global (user-wide) access:
 
-```txt
-https://github.com/DynamoDS/skills.git
-```
-
-Cursor will fetch the skills automatically. See the [Cursor skills docs](https://cursor.com/docs/skills) for full details. Alternatively, symlink the `skills/` folder to `.cursor/skills/`.
+Cursor discovers skills in those paths automatically. See the [Cursor skills docs](https://cursor.com/docs/skills) for full details.
 
 ## Contributing
 

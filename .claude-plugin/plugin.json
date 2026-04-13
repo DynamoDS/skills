@@ -1,7 +1,7 @@
 {
   "name": "dynamo-skills",
   "description": "Shared Claude Code skills for the DynamoDS org",
-  "version": "2026.04.09",
+  "version": "2026.04.13",
   "author": {
     "name": "DynamoDS"
   },
