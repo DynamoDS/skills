@@ -2,8 +2,6 @@ name: Validate Skills
 
 on:
   pull_request:
-    paths:
-      - "skills/**"
 
 env:
   SKILLS_DIR: skills

@@ -94,7 +94,8 @@ TEMPLATE = """\
       font-weight: 500;
     }
 
-    .nav-logo img { width: 24px; height: 24px; }
+    .nav-logo img { width: 24px; height: 24px; flex-shrink: 0; }
+    .nav-logo span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
     nav a.gh-link {
       display: flex;
@@ -104,15 +105,16 @@ TEMPLATE = """\
       text-decoration: none;
       font-size: 0.85rem;
       transition: color 0.15s;
+      flex-shrink: 0;
     }
 
     nav a.gh-link:hover { color: var(--text); }
     nav a.gh-link i { font-size: 18px; }
 
     .hero {
-      max-width: 1100px;
+      max-width: 1400px;
       margin: 0 auto;
-      padding: 48px 2rem 40px;
+      padding: 28px 2rem 24px;
       text-align: center;
     }
 
@@ -133,37 +135,103 @@ TEMPLATE = """\
 
     .hero h1 span { color: var(--accent); }
 
+    .hero p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
     section {
-      max-width: 1100px;
+      max-width: 1400px;
       margin: 0 auto;
       padding: 0 2rem 80px;
     }
 
-    .section-label {
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 10px;
+    /* ── Setup tabs ─────────────────────────────── */
+
+    .tab-bar {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
     }
 
-    section h2 {
-      font-size: 1.5rem;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      margin-bottom: 8px;
-    }
-
-    section > p {
+    .tab-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 14px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-family: var(--mono);
+      font-weight: 500;
+      cursor: pointer;
+      background: var(--surface);
+      border: 1px solid var(--border);
       color: var(--muted);
-      font-size: 0.95rem;
-      margin-bottom: 32px;
+      transition: all 0.15s;
     }
+    .tab-btn:hover { border-color: #444; color: var(--text); }
+    .tab-btn.active { color: var(--accent); border-color: var(--accent); background: var(--accent-dim); }
+
+    .tab-panel { display: none; max-width: 560px; }
+    .tab-panel.active { display: block; }
+
+    .setup-step {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 14px 0 6px;
+    }
+    .setup-step:first-child { margin-top: 0; }
+
+    .setup-note {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-top: 8px;
+      line-height: 1.5;
+    }
+
+    .setup-list {
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.7;
+      padding-left: 1.4em;
+      margin-top: 6px;
+    }
+
+    /* ── Search ─────────────────────────────────── */
+
+    #skill-search {
+      width: 100%;
+      background: #0d0d0d;
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 0.875rem;
+      color: var(--text);
+      outline: none;
+      font-family: var(--font);
+      margin-bottom: 4px;
+    }
+    #skill-search:focus { border-color: #444; }
+    #skill-search::placeholder { color: #555; }
+
+    .results-count {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 16px;
+      font-family: var(--mono);
+    }
+
+    /* ── Plugin grid ────────────────────────────── */
 
     .skills-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(min(420px, 100%), 1fr));
       gap: 16px;
     }
 
@@ -178,6 +246,7 @@ TEMPLATE = """\
     }
 
     .skill-card:hover { border-color: #333; }
+    .skill-card.hidden { display: none; }
 
     .skill-card-body { flex: 1; }
 
@@ -214,60 +283,41 @@ TEMPLATE = """\
       margin-bottom: 12px;
     }
 
-    #skill-search:focus { border-color: #444; }
-    #skill-search::placeholder { color: #555; }
-    .skill-card.hidden { display: none; }
+    /* ── No results ─────────────────────────────── */
+
+    #no-results {
+      display: none;
+      text-align: center;
+      padding: 64px 0;
+      color: var(--muted);
+    }
+    #no-results i { font-size: 2rem; margin-bottom: 12px; opacity: 0.3; display: block; }
+    #no-results p { font-size: 0.9rem; }
+
+    /* ── Code / copy ────────────────────────────── */
 
     .code-block {
       background: #0a0a0a;
       border: 1px solid #1e1e1e;
       border-radius: 8px;
-      padding: 12px 52px 12px 14px;
+      padding: 12px 40px 12px 14px;
       font-family: var(--mono);
       font-size: 0.8rem;
       color: #cdd6f4;
-      overflow-x: hidden;
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    .skill-card .code-block {
       white-space: pre-wrap;
       word-break: break-all;
+      overflow-x: hidden;
     }
-
-    .other-ides {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(460px, 1fr));
-      gap: 16px;
-    }
-
-    .ide-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 20px 24px;
-    }
-
-    .ide-card h3 {
-      font-size: 0.9rem;
-      font-weight: 600;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .ide-card h3 i { color: var(--muted); }
-
-    .ide-card p {
-      font-size: 0.875rem;
-      color: var(--muted);
-      line-height: 1.55;
-      margin-bottom: 12px;
-    }
-
-    .ide-card p:last-child { margin-bottom: 0; }
 
     hr { border: none; border-top: 1px solid var(--border); margin: 0 2rem; }
 
     footer {
-      max-width: 1100px;
+      max-width: 1400px;
       margin: 0 auto;
       padding: 32px 2rem 48px;
       display: flex;
@@ -281,7 +331,8 @@ TEMPLATE = """\
     footer a { color: var(--muted); text-decoration: none; }
     footer a:hover { color: var(--text); }
 
-    .code-wrap { position: relative; }
+    .code-wrap { position: relative; margin-bottom: 8px; }
+    .code-wrap:last-child { margin-bottom: 0; }
     .copy-btn {
       position: absolute; top: 8px; right: 8px;
       background: transparent; border: 1px solid #2e2e2e;
@@ -296,9 +347,13 @@ TEMPLATE = """\
     @media (max-width: 600px) {
       .hero { padding: 32px 1.25rem 28px; }
       section { padding: 0 1.25rem 60px; }
-      nav { padding: 0 1.25rem; }
+      nav { padding: 0 1rem; gap: 8px; }
       footer { padding: 28px 1.25rem 40px; }
       hr { margin: 0 1.25rem; }
+      .skills-grid { grid-template-columns: 1fr; }
+      #skill-search { font-size: 1rem; }
+      .copy-btn { padding: 8px 10px; }
+      .tab-btn { font-size: 0.72rem; padding: 4px 10px; }
     }
   </style>
 </head>
@@ -307,7 +362,7 @@ TEMPLATE = """\
 <nav>
   <a class="nav-logo" href="#">
     <img src="images/logo_32.png" alt="Dynamo" />
-    DynamoDS / skills
+    <span>DynamoDS / skills</span>
   </a>
   <a class="gh-link" href="https://github.com/DynamoDS/skills" target="_blank" rel="noopener">
     <i class="fa-brands fa-github"></i>
@@ -317,65 +372,73 @@ TEMPLATE = """\
 
 <div class="hero">
   <img src="images/logo.png" alt="Dynamo logo" />
-  <h1>Shared <span>Agent Skills</span> for DynamoDS</h1>
-  <p style="color:var(--muted);font-size:0.95rem;width:100%;max-width:1100px;text-align:left;margin-top:12px;">Agent Skills are a simple, open format for giving agents new capabilities and expertise. Each skill is a self-contained folder of instructions and resources that agents can discover and use — write once, use everywhere. <a href="https://agentskills.io/home" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">Learn more →</a></p>
+  <h1><span>DynamoDS</span> Shared Skills</h1>
+  <p>Agent Skills are a simple, open format for giving agents new capabilities and expertise — write once, use everywhere. <a href="https://agentskills.io/home" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">Learn more →</a></p>
 </div>
 
 <hr />
 
-<section style="padding-top: 64px;">
-  <div style="margin-bottom: 32px;">
-    <div class="section-label">Get started</div>
-    <h2 style="font-size: 1.2rem; margin-bottom: 8px;">Install as a Claude plugin</h2>
-    <p style="color: var(--muted); font-size: 0.95rem; margin-bottom: 16px;">One install brings all skills into Claude Code. Add the marketplace, then install the plugin.</p>
-    <div style="display:flex;flex-direction:column;gap:10px;">
-      <div>
-        <div style="font-size:0.75rem;color:var(--muted);font-family:var(--mono);margin-bottom:5px;">1. Add the marketplace</div>
-        <div class="code-wrap">
-          <div class="code-block">/plugin marketplace add DynamoDS/skills</div>
-          <button class="copy-btn" aria-label="Copy"><i class="fa-regular fa-copy"></i></button>
-        </div>
+<section style="padding-top: 32px;">
+  <div style="margin-bottom: 24px;">
+    <div class="tab-bar" id="setup-tabs">
+      <button class="tab-btn active" data-tab="claude"><i class="fa-solid fa-terminal"></i> Claude Code</button>
+      <button class="tab-btn" data-tab="copilot"><i class="fa-brands fa-github"></i> GitHub Copilot</button>
+      <button class="tab-btn" data-tab="vscode"><i class="fa-solid fa-code"></i> VS Code</button>
+      <button class="tab-btn" data-tab="cursor"><i class="fa-solid fa-arrow-pointer"></i> Cursor</button>
+    </div>
+
+    <div class="tab-panel active" id="tab-claude">
+      <div class="setup-step">Add marketplace</div>
+      <div class="code-wrap">
+        <div class="code-block">/plugin marketplace add DynamoDS/skills</div>
+        <button class="copy-btn" aria-label="Copy"><i class="fa-regular fa-copy"></i></button>
       </div>
-      <div>
-        <div style="font-size:0.75rem;color:var(--muted);font-family:var(--mono);margin-bottom:5px;">2. Install the plugin</div>
-        <div class="code-wrap">
-          <div class="code-block">/plugin install dynamo-skills</div>
-          <button class="copy-btn" aria-label="Copy"><i class="fa-regular fa-copy"></i></button>
-        </div>
+      <div class="setup-step">Install plugin</div>
+      <div class="code-wrap">
+        <div class="code-block">/plugin install dynamo-skills</div>
+        <button class="copy-btn" aria-label="Copy"><i class="fa-regular fa-copy"></i></button>
       </div>
+      <p class="setup-note" style="margin-top:12px;">
+        <a href="https://claude.com/docs/skills/how-to" target="_blank" rel="noopener" style="color:var(--accent);">Skills documentation ↗</a>
+      </p>
+    </div>
+
+    <div class="tab-panel" id="tab-copilot">
+      <div class="setup-step">Copy skills into your repo</div>
+      <p class="setup-note">Drop skill folders into <code style="font-family:var(--mono);font-size:0.85em;">.github/skills/</code>, <code style="font-family:var(--mono);font-size:0.85em;">.agents/skills/</code>, or <code style="font-family:var(--mono);font-size:0.85em;">.claude/skills/</code> for project access, or <code style="font-family:var(--mono);font-size:0.85em;">~/.copilot/skills/</code> for personal skills across all projects. Copilot discovers them automatically.</p>
+      <p class="setup-note" style="margin-top:8px;">In the CLI, use <code style="font-family:var(--mono);font-size:0.85em;">/skill-name</code> to invoke a skill explicitly, or <code style="font-family:var(--mono);font-size:0.85em;">/skills list</code> to see what's available.</p>
+      <p class="setup-note" style="margin-top:12px;"><a href="https://docs.github.com/en/copilot/concepts/agents/about-agent-skills" target="_blank" rel="noopener" style="color:var(--accent);">Agent skills documentation ↗</a></p>
+    </div>
+
+    <div class="tab-panel" id="tab-vscode">
+      <div class="setup-step">Copy skills into your repo</div>
+      <p class="setup-note">Drop skill folders directly into <code style="font-family:var(--mono);font-size:0.85em;">.github/skills/</code>, <code style="font-family:var(--mono);font-size:0.85em;">.agents/skills/</code>, or <code style="font-family:var(--mono);font-size:0.85em;">.claude/skills/</code> — VS Code discovers those automatically, no settings required.</p>
+      <p class="setup-note" style="margin-top:8px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;">
+        <span>To keep skills in sync as a git submodule instead, add the repo and point <code style="font-family:var(--mono);font-size:0.85em;">chat.skillsLocations</code> at the <code style="font-family:var(--mono);font-size:0.85em;">skills/</code> subfolder in your <code style="font-family:var(--mono);font-size:0.85em;">.vscode/settings.json</code>.</span>
+        <a href="vscode://settings/chat.skillsLocations" style="display:inline-flex;align-items:center;gap:5px;background:var(--accent);color:#fff;padding:4px 10px;border-radius:6px;font-size:0.8rem;text-decoration:none;font-weight:600;white-space:nowrap;"><i class="fa-solid fa-code"></i> Open in VS Code</a>
+      </p>
+      <p class="setup-note" style="margin-top:12px;"><a href="https://code.visualstudio.com/docs/copilot/customization/agent-skills#_use-shared-skills" target="_blank" rel="noopener" style="color:var(--accent);">Shared skills documentation ↗</a></p>
+    </div>
+
+    <div class="tab-panel" id="tab-cursor">
+      <div class="setup-step">Copy skills into your project</div>
+      <p class="setup-note">Drop skill folders into <code style="font-family:var(--mono);font-size:0.85em;">.cursor/skills/</code> in your repo, or <code style="font-family:var(--mono);font-size:0.85em;">~/.cursor/skills/</code> for global (user-wide) access. Cursor discovers them automatically.</p>
+      <p class="setup-note" style="margin-top:12px;"><a href="https://cursor.com/docs/skills" target="_blank" rel="noopener" style="color:var(--accent);">Cursor skills documentation ↗</a></p>
     </div>
   </div>
-  <div style="margin-bottom:16px;">
-    <input id="skill-search" type="search" placeholder="Search skills…" autocomplete="off"
-      style="width:100%;box-sizing:border-box;background:#0d0d0d;border:1px solid #2a2a2a;border-radius:8px;padding:10px 14px;font-size:0.875rem;color:var(--text);outline:none;font-family:var(--font);">
+
+  <div style="margin-bottom: 4px;">
+    <input id="skill-search" type="search" placeholder="Search skills…" autocomplete="off" />
   </div>
-  <div class="skills-grid">
+  <div class="results-count" id="results-count"></div>
+
+  <div class="skills-grid" id="skills-grid">
 __SKILL_CARDS__
   </div>
-  <div style="margin-top: 32px;">
-    <h2 style="font-size: 1.2rem; margin-bottom: 8px;">Other IDEs</h2>
-    <p style="color: var(--muted); font-size: 0.95rem; margin-bottom: 16px;">Skills follow the <a href="https://agentskills.io/specification" target="_blank" rel="noopener" style="color: var(--accent); text-decoration: none;">agentskills.io</a> open spec and work with any agent-aware IDE.</p>
-    <div class="other-ides">
-      <div class="ide-card">
-        <h3><img src="images/vscode-alt.png" alt="VS Code" style="width:18px;height:18px;vertical-align:middle;"> VS Code</h3>
-        <p>Add as a git submodule and point <code style="font-family:var(--mono);font-size:0.8rem;">chat.agentSkillsLocations</code> at it:</p>
-        <div class="code-wrap">
-          <div class="code-block">git submodule add https://github.com/DynamoDS/skills.git .agents/dynamo-skills</div>
-          <button class="copy-btn" aria-label="Copy"><i class="fa-regular fa-copy"></i></button>
-        </div>
-        <p style="margin-top: 10px;"><a href="https://code.visualstudio.com/docs/copilot/customization/agent-skills" target="_blank" rel="noopener" style="color: var(--accent); text-decoration: none;">Learn more →</a></p>
-      </div>
-      <div class="ide-card">
-        <h3><img src="images/cursor.png" alt="Cursor" style="width:18px;height:18px;border-radius:4px;vertical-align:middle;"> Cursor</h3>
-        <p>Add as a remote rule in <strong>Cursor Settings → Rules for AI</strong>:</p>
-        <div class="code-wrap">
-          <div class="code-block">https://github.com/DynamoDS/skills.git</div>
-          <button class="copy-btn" aria-label="Copy"><i class="fa-regular fa-copy"></i></button>
-        </div>
-        <p style="margin-top: 10px;"><a href="https://cursor.com/docs/skills" target="_blank" rel="noopener" style="color: var(--accent); text-decoration: none;">Learn more →</a></p>
-      </div>
-    </div>
-    <p style="margin-top: 16px; font-size: 0.85rem; color: var(--muted);">For detailed setup instructions including git submodule and symlink options, see the <a href="https://github.com/DynamoDS/skills#usage" target="_blank" rel="noopener" style="color: var(--accent); text-decoration: none;">README</a>.</p>
+
+  <div id="no-results">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <p>No skills match your search.</p>
   </div>
 </section>
 
@@ -386,6 +449,7 @@ __SKILL_CARDS__
 </footer>
 
 <script>
+// Copy buttons
 document.querySelectorAll('.copy-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     const text = btn.closest('.code-wrap').querySelector('.code-block').textContent.trim();
@@ -400,14 +464,36 @@ document.querySelectorAll('.copy-btn').forEach(btn => {
   });
 });
 
-const searchInput = document.getElementById('skill-search');
-
-searchInput.addEventListener('input', () => {
-  const q = searchInput.value.toLowerCase();
-  document.querySelectorAll('.skill-card').forEach(card => {
-    card.classList.toggle('hidden', q !== '' && !card.textContent.toLowerCase().includes(q));
+// Setup tabs
+document.querySelectorAll('#setup-tabs .tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#setup-tabs .tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
   });
 });
+
+// Search
+const searchInput = document.getElementById('skill-search');
+const resultsCount = document.getElementById('results-count');
+const noResults = document.getElementById('no-results');
+const allCards = document.querySelectorAll('.skill-card');
+
+function updateSearch() {
+  const q = searchInput.value.toLowerCase();
+  let visible = 0;
+  allCards.forEach(card => {
+    const match = q === '' || card.textContent.toLowerCase().includes(q);
+    card.classList.toggle('hidden', !match);
+    if (match) visible++;
+  });
+  resultsCount.textContent = q ? `${visible} of ${allCards.length} skills` : '';
+  noResults.style.display = visible === 0 ? 'block' : 'none';
+}
+
+searchInput.addEventListener('input', updateSearch);
+updateSearch();
 </script>
 </body>
 </html>
