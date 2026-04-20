@@ -87,6 +87,8 @@ gh skill install DynamoDS/skills dynamo-jira-ticket
 gh skill update --all
 ```
 
+See the [`gh skill` docs](https://cli.github.com/manual/gh_skill) for full details.
+
 ### VS Code
 
 Copy individual skill folders directly into `.github/skills/`, `.agents/skills/`, or `.claude/skills/` — VS Code discovers those paths automatically, no settings required.
