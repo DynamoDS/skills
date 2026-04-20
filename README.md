@@ -72,6 +72,21 @@ In the CLI, use `/skill-name` to invoke a skill explicitly, or `/skills list` to
 
 See the [GitHub Copilot agent skills docs](https://docs.github.com/en/copilot/concepts/agents/about-agent-skills) for full details.
 
+### GitHub CLI
+
+Requires GitHub CLI v2.90.0+. Works with Claude Code, Copilot, Cursor, and other supported agents.
+
+```bash
+# Browse and install interactively
+gh skill install DynamoDS/skills
+
+# Install a specific skill
+gh skill install DynamoDS/skills dynamo-jira-ticket
+
+# Update all installed skills
+gh skill update --all
+```
+
 ### VS Code
 
 Copy individual skill folders directly into `.github/skills/`, `.agents/skills/`, or `.claude/skills/` — VS Code discovers those paths automatically, no settings required.
