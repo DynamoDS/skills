@@ -405,14 +405,14 @@ TEMPLATE = """\
     </div>
 
     <div class="tab-panel" id="tab-ghcli">
-      <div class="setup-step">Install a specific skill</div>
-      <div class="code-wrap">
-        <div class="code-block">gh skill install DynamoDS/skills dynamo-jira-ticket</div>
-        <button class="copy-btn" aria-label="Copy"><i class="fa-regular fa-copy"></i></button>
-      </div>
-      <div class="setup-step" style="margin-top:12px;">Or browse and install interactively</div>
+      <div class="setup-step">Browse and install interactively</div>
       <div class="code-wrap">
         <div class="code-block">gh skill install DynamoDS/skills</div>
+        <button class="copy-btn" aria-label="Copy"><i class="fa-regular fa-copy"></i></button>
+      </div>
+      <div class="setup-step" style="margin-top:12px;">Or install a specific skill</div>
+      <div class="code-wrap">
+        <div class="code-block">gh skill install DynamoDS/skills dynamo-jira-ticket</div>
         <button class="copy-btn" aria-label="Copy"><i class="fa-regular fa-copy"></i></button>
       </div>
       <p class="setup-note" style="margin-top:12px;">Requires GitHub CLI v2.90.0+. Works with Claude Code, Copilot, Cursor, and more. Update all installed skills with <code style="font-family:var(--mono);font-size:0.85em;">gh skill update --all</code>.</p>
