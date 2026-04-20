@@ -24,6 +24,6 @@ jobs:
           go-version: stable
           cache: false
       - name: Install skill-validator
-        run: go install github.com/agent-ecosystem/skill-validator/cmd/skill-validator@v1.5.2
+        run: go install github.com/agent-ecosystem/skill-validator/cmd/skill-validator@v1.5.5
       - name: Validate changed skills
         run: bash .github/scripts/validate_skills.sh "${{ github.base_ref }}" "$SKILLS_DIR"

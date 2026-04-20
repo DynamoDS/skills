@@ -341,7 +341,8 @@
   <div style="margin-bottom: 24px;">
     <div class="tab-bar" id="setup-tabs">
       <button class="tab-btn active" data-tab="claude"><i class="fa-solid fa-terminal"></i> Claude Code</button>
-      <button class="tab-btn" data-tab="copilot"><i class="fa-brands fa-github"></i> GitHub Copilot</button>
+      <button class="tab-btn" data-tab="ghcli"><i class="fa-brands fa-github"></i> GitHub CLI</button>
+      <button class="tab-btn" data-tab="copilot"><i class="fa-solid fa-robot"></i> GitHub Copilot</button>
       <button class="tab-btn" data-tab="vscode"><i class="fa-solid fa-code"></i> VS Code</button>
       <button class="tab-btn" data-tab="cursor"><i class="fa-solid fa-arrow-pointer"></i> Cursor</button>
     </div>
@@ -362,6 +363,21 @@
       </p>
     </div>
 
+    <div class="tab-panel" id="tab-ghcli">
+      <div class="setup-step">Install a specific skill</div>
+      <div class="code-wrap">
+        <div class="code-block">gh skill install DynamoDS/skills dynamo-jira-ticket</div>
+        <button class="copy-btn" aria-label="Copy"><i class="fa-regular fa-copy"></i></button>
+      </div>
+      <div class="setup-step" style="margin-top:12px;">Or browse and install interactively</div>
+      <div class="code-wrap">
+        <div class="code-block">gh skill install DynamoDS/skills</div>
+        <button class="copy-btn" aria-label="Copy"><i class="fa-regular fa-copy"></i></button>
+      </div>
+      <p class="setup-note" style="margin-top:12px;">Requires GitHub CLI v2.90.0+. Works with Claude Code, Copilot, Cursor, and more. Update all installed skills with <code style="font-family:var(--mono);font-size:0.85em;">gh skill update --all</code>.</p>
+      <p class="setup-note" style="margin-top:8px;"><a href="https://cli.github.com/manual/gh_skill" target="_blank" rel="noopener" style="color:var(--accent);">GitHub CLI skills documentation ↗</a></p>
+    </div>
+
     <div class="tab-panel" id="tab-copilot">
       <div class="setup-step">Copy skills into your repo</div>
       <p class="setup-note">Drop skill folders into <code style="font-family:var(--mono);font-size:0.85em;">.github/skills/</code>, <code style="font-family:var(--mono);font-size:0.85em;">.agents/skills/</code>, or <code style="font-family:var(--mono);font-size:0.85em;">.claude/skills/</code> for project access, or <code style="font-family:var(--mono);font-size:0.85em;">~/.copilot/skills/</code> for personal skills across all projects. Copilot discovers them automatically.</p>
@@ -372,7 +388,10 @@
     <div class="tab-panel" id="tab-vscode">
       <div class="setup-step">Copy skills into your repo</div>
       <p class="setup-note">Drop skill folders directly into <code style="font-family:var(--mono);font-size:0.85em;">.github/skills/</code>, <code style="font-family:var(--mono);font-size:0.85em;">.agents/skills/</code>, or <code style="font-family:var(--mono);font-size:0.85em;">.claude/skills/</code> — VS Code discovers those automatically, no settings required.</p>
-      <p class="setup-note" style="margin-top:8px;">To keep skills in sync as a git submodule instead, add the repo and point <code style="font-family:var(--mono);font-size:0.85em;">chat.skillsLocations</code> at the <code style="font-family:var(--mono);font-size:0.85em;">skills/</code> subfolder in your <code style="font-family:var(--mono);font-size:0.85em;">.vscode/settings.json</code>.</p>
+      <p class="setup-note" style="margin-top:8px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;">
+        <span>To keep skills in sync as a git submodule instead, add the repo and point <code style="font-family:var(--mono);font-size:0.85em;">chat.skillsLocations</code> at the <code style="font-family:var(--mono);font-size:0.85em;">skills/</code> subfolder in your <code style="font-family:var(--mono);font-size:0.85em;">.vscode/settings.json</code>.</span>
+        <a href="vscode://settings/chat.skillsLocations" style="display:inline-flex;align-items:center;gap:5px;background:var(--accent);color:#fff;padding:4px 10px;border-radius:6px;font-size:0.8rem;text-decoration:none;font-weight:600;white-space:nowrap;"><i class="fa-solid fa-code"></i> Open in VS Code</a>
+      </p>
       <p class="setup-note" style="margin-top:12px;"><a href="https://code.visualstudio.com/docs/copilot/customization/agent-skills#_use-shared-skills" target="_blank" rel="noopener" style="color:var(--accent);">Shared skills documentation ↗</a></p>
     </div>
 

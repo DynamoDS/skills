@@ -382,7 +382,8 @@ TEMPLATE = """\
   <div style="margin-bottom: 24px;">
     <div class="tab-bar" id="setup-tabs">
       <button class="tab-btn active" data-tab="claude"><i class="fa-solid fa-terminal"></i> Claude Code</button>
-      <button class="tab-btn" data-tab="copilot"><i class="fa-brands fa-github"></i> GitHub Copilot</button>
+      <button class="tab-btn" data-tab="ghcli"><i class="fa-brands fa-github"></i> GitHub CLI</button>
+      <button class="tab-btn" data-tab="copilot"><i class="fa-solid fa-robot"></i> GitHub Copilot</button>
       <button class="tab-btn" data-tab="vscode"><i class="fa-solid fa-code"></i> VS Code</button>
       <button class="tab-btn" data-tab="cursor"><i class="fa-solid fa-arrow-pointer"></i> Cursor</button>
     </div>
@@ -401,6 +402,21 @@ TEMPLATE = """\
       <p class="setup-note" style="margin-top:12px;">
         <a href="https://claude.com/docs/skills/how-to" target="_blank" rel="noopener" style="color:var(--accent);">Skills documentation ↗</a>
       </p>
+    </div>
+
+    <div class="tab-panel" id="tab-ghcli">
+      <div class="setup-step">Browse and install interactively</div>
+      <div class="code-wrap">
+        <div class="code-block">gh skill install DynamoDS/skills</div>
+        <button class="copy-btn" aria-label="Copy"><i class="fa-regular fa-copy"></i></button>
+      </div>
+      <div class="setup-step" style="margin-top:12px;">Or install a specific skill</div>
+      <div class="code-wrap">
+        <div class="code-block">gh skill install DynamoDS/skills dynamo-jira-ticket</div>
+        <button class="copy-btn" aria-label="Copy"><i class="fa-regular fa-copy"></i></button>
+      </div>
+      <p class="setup-note" style="margin-top:12px;">Requires GitHub CLI v2.90.0+. Works with Claude Code, Copilot, Cursor, and more. Update all installed skills with <code style="font-family:var(--mono);font-size:0.85em;">gh skill update --all</code>.</p>
+      <p class="setup-note" style="margin-top:8px;"><a href="https://cli.github.com/manual/gh_skill" target="_blank" rel="noopener" style="color:var(--accent);">GitHub CLI skills documentation ↗</a></p>
     </div>
 
     <div class="tab-panel" id="tab-copilot">
